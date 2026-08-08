@@ -1,5 +1,6 @@
 import Contact from "../models/contact.model.js";
 import sendEmail from "../utils/email.js";
+
 const createContactMessage = async (req, res) => {
   try {
     const { name, email, message } = req.body;
@@ -22,7 +23,9 @@ ${message}
 
 Thank you for contacting Movie Management.
 
-Regards,We will get back to you shortly.
+Regards,
+We will get back to you shortly.
+
 Movie Management Team`,
     );
 
