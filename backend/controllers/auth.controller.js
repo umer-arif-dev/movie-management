@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import sendEmail from "../utils/email.js";
 const signup = async (req, res) => {
   try {
     const { userName, email, password } = req.body;
@@ -23,6 +24,13 @@ const signup = async (req, res) => {
       email,
       password: hashedPassword,
     });
+
+    await sendEmail(
+      email,
+      "Welcome to Movie Management",
+      `Hello ${userName}, Your Movie Management account has been created successfully. 
+   Email: ${email} Thank you for joining Movie Management! Regards, Movie Management Team`,
+    );
 
     res.status(201).json({
       message: "Signup successful",
@@ -55,10 +63,7 @@ const login = async (req, res) => {
     }
 
     // Compare password
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
       return res.status(400).json({
@@ -75,7 +80,7 @@ const login = async (req, res) => {
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",
-      }
+      },
     );
 
     res.status(200).json({
