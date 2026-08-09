@@ -1,9 +1,14 @@
-
 const validateSignup = (req, res, next) => {
   const { userName, email, password, confirmPassword } = req.body;
 
   // Required fields
   if (!userName || !email || !password || !confirmPassword) {
+    console.log("Missing required fields:", {
+      userName,
+      email,
+      password,
+      confirmPassword,
+    });
     return res.status(400).json({
       message: "Username, email, password and confirm password are required",
     });
@@ -30,9 +35,6 @@ const validateSignup = (req, res, next) => {
 
   next();
 };
-
-
-
 
 const validateLogin = (req, res, next) => {
   const { email, password } = req.body;

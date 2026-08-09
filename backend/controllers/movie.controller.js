@@ -110,4 +110,73 @@ const getMovieById = async (req, res) => {
   }
 };
 
-export { getAllMovies, getMovieById, createMovie };
+// Update Movie
+const updateMovie = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedMovie) {
+      return res.status(404).json({
+        message: "Movie not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Movie updated successfully",
+      movie: updatedMovie,
+    });
+  } catch (error) {
+    console.error("Update movie error:", error);
+
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+
+// Delete Movie
+const deleteMovie = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedMovie = await Movie.findByIdAndDelete(id);
+
+    if (!deletedMovie) {
+      return res.status(404).json({
+        message: "Movie not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Movie deleted successfully",
+      movie: deletedMovie,
+    });
+  } catch (error) {
+    console.error("Delete movie error:", error);
+
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+
+
+export {
+  createMovie,
+  getAllMovies,
+  getMovieById,
+  updateMovie,
+  deleteMovie,
+};
+
