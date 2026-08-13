@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const BASE_URL = "http://localhost:4000/api";
-
 const getToken = () => {
   return localStorage.getItem("token");
 };
@@ -23,7 +22,6 @@ export const loginUser = async (userData) => {
   }
 };
 
-
 export const getAllMovies = async () => {
   try {
     const movies = await axios.get(`${BASE_URL}/getmovies`);
@@ -32,7 +30,6 @@ export const getAllMovies = async () => {
     throw error;
   }
 };
-
 
 export const getMovieById = async (id) => {
   try {
@@ -44,20 +41,15 @@ export const getMovieById = async (id) => {
   }
 };
 
-
 export const bookTicketAPI = async (ticketData) => {
   try {
     const token = getToken();
 
-    const ticket = await axios.post(
-      `${BASE_URL}/bookticket`,
-      ticketData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const ticket = await axios.post(`${BASE_URL}/bookticket`, ticketData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return ticket.data;
   } catch (error) {
@@ -69,18 +61,31 @@ export const contactMessage = async (messageData) => {
   try {
     const token = getToken();
 
-    const message = await axios.post(
-      `${BASE_URL}/contact`,
-      messageData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const message = await axios.post(`${BASE_URL}/contact`, messageData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return message.data;
   } catch (error) {
     throw error;
   }
+};
+
+export const getProfile = async (token) => {
+  const response = await fetch(`${BASE_URL}/profile`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to fetch profile");
+  }
+
+  return data;
 };

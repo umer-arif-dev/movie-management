@@ -8,12 +8,13 @@ import authRoutes from "./routes/auth.routes.js";
 import movieRoutes from "./routes/movie.routes.js";
 import ticketRoutes from "./routes/ticket.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
-
+import profileRoutes from "./routes/profile.routes.js";
 const app = express();
 
 const PORT = 4000;
 
 app.use(cors());
+
 app.use(express.json());
 
 connectDB();
@@ -22,6 +23,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api", movieRoutes);
 app.use("/api", ticketRoutes);
 app.use("/api", contactRoutes);
+app.use("/api", profileRoutes);
 
 app.get("/", (req, res) => {
   res.json({
